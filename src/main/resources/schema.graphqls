@@ -1,0 +1,72 @@
+type List {
+  id: ID!
+  name: String!
+  author: String!
+  tasks: [Task]!
+}
+
+type Task {
+  id: ID!
+  title: String!
+  done: Boolean!
+  description: String
+  priority: Int!
+  list: List
+}
+
+type Query {
+  allTasks: [Task]
+  findTask(id: ID!): Task
+  aggregateTask: TaskAggregateResult
+
+  allLists: [List]
+  findList(id: ID!): List
+  aggregateList: ListAggregateResult
+}
+
+type TaskAggregateResult {
+  count: Int!
+}
+
+type ListAggregateResult {
+  count: Int!
+}
+
+input TaskInput {
+  title: String!
+  description: String
+  priority: Int
+  list: Int
+  done: Boolean
+}
+
+input ListInput {
+  name: String!
+  author: String!
+}
+
+input TaskModification {
+  id: ID!
+  title: String
+  description: String
+  priority: Int
+  list: Int
+  done: Boolean
+}
+
+input ListModification {
+  id: ID!
+  name: String
+  author: String
+}
+
+type Mutation {
+  addTask(input: TaskInput!): Task!
+  addList(input: ListInput!): List!
+  deleteTask(id: ID!): Boolean
+  deleteList(id: ID!): Boolean
+  modifyTask(input: TaskModification): Task!
+  modifyList(input: ListModification): List!
+  truncateTasks(input: Boolean): Boolean
+  truncateLists(input: Boolean): Boolean
+}
